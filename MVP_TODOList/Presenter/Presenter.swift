@@ -17,9 +17,6 @@ protocol CreateTaskDelegate {
      func createTask()
 }
 
-
-
-
 //typealias alertAndViewDelegate = AlertShowDelegate & ViewController
 
 class MainPresenter {

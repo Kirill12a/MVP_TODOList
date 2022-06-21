@@ -33,12 +33,6 @@ class VcView: UIView {
 
     func setUp(){
         [tableView].forEach(self.addSubview(_:))
-
-
-        
-
-
-
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: topAnchor),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor),

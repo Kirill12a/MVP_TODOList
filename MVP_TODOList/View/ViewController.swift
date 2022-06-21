@@ -7,56 +7,72 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TupTableViewDelegate, CreateTaskDelegate {
+class ViewController: UIViewController {
 
-    func presentAlert(titile: String, message: String) {
-        print("я нажал на плюс")
-    }
-
+    var viewSource: VcView = {
+        var vc = VcView()
+        return vc
+    }()
 
     var nameUser: [String] = ["1","2","3","4"]
 
-    //delegate
+    var presenter: MainPresenter!
+
+    override func loadView() {
+        super.loadView()
+        self.view = viewSource
+        
+        // presenter
+        presenter = MainPresenter()
+        presenter.delegate = self
+        presenter.delegateCreateTask = self
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        viewSource.tableView.delegate = self
+        viewSource.tableView.dataSource = self
+
+        title = "Todo"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(createTask))
+    }
+
+}
+
+extension ViewController: TupTableViewDelegate {
     func didTup() {
         print("Hello World")
     }
+}
 
-    var textAlet: String?
+extension ViewController: CreateTaskDelegate {
+    @objc func createTask() {
+        let alertController = UIAlertController(
+            title: "Login", message: nil, preferredStyle: .alert)
 
-   @objc func createTask() {
-//       nameUser.append(newItem)
+        alertController.addTextField { textField in
+            textField.placeholder = "Сюда таск напиши"
+        }
 
+        let continueAction = UIAlertAction(title: "Continue", style: .default) { [self] _ in
+            guard let textFields = alertController.textFields else {return}
+            nameUser.append(textFields[0].text!)
+            DispatchQueue.main.async { [self] in
+                viewSource.tableView.reloadData()
+            }
+        }
 
-
-       let alertController = UIAlertController(title: "Login",
-                                                  message: nil,
-                                                  preferredStyle: .alert)
-
-       alertController.addTextField { textField in
-           textField.placeholder = "Сюда таск напиши"
-       }
-
-       let continueAction = UIAlertAction(title: "Continue", style: .default) { [self] _ in
-           guard let textFields = alertController.textFields else {return}
-
-           print(textFields[0].text!)
-
-           nameUser.append(textFields[0].text!)
-           DispatchQueue.main.async { [self] in
-               viewSource.tableView.reloadData()
-           }
-       }
-
-       alertController.addAction(continueAction)
+        alertController.addAction(continueAction)
+           self.present(alertController, animated: true)
+     }
+}
 
 
 
-          self.present(alertController,
-                       animated: true)
-    }
-
-
-
+//MARK:  - TableViewDelegate
+extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return nameUser.count
     }
@@ -69,43 +85,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter.tableViewTouch()
+        presenter.tableViewTouch() // пусть тут будет удаление из бд
     }
-
-
-    override func loadView() {
-        super.loadView()
-        self.view = viewSource
-        presenter = MainPresenter()
-        presenter.delegate = self
-        presenter.delegateCreateTask = self
-
-        
-
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        viewSource.tableView.delegate = self
-        viewSource.tableView.dataSource = self
-        title = "Todo"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(createTask))
-    }
-
-    var presenter: MainPresenter!
-
-
-    var viewSource: VcView = {
-        var vc = VcView()
-        return vc
-    }()
-
-
 }
-
-
 
 //var realm: Realm!
 //
