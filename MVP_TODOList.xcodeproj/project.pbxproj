@@ -16,6 +16,7 @@
 		D2DE671A285F6A1A00E83409 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D2DE6719285F6A1A00E83409 /* RealmSwift */; };
 		D2DE671D285FC0A200E83409 /* ToDoListTaskModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DE671C285FC0A200E83409 /* ToDoListTaskModel.swift */; };
 		D2DE6722285FCA9500E83409 /* VcView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DE6721285FCA9500E83409 /* VcView.swift */; };
+		D2DE672428603D9B00E83409 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DE672328603D9B00E83409 /* Presenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		D2DE6710285F68A400E83409 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2DE671C285FC0A200E83409 /* ToDoListTaskModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListTaskModel.swift; sourceTree = "<group>"; };
 		D2DE6721285FCA9500E83409 /* VcView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VcView.swift; sourceTree = "<group>"; };
+		D2DE672328603D9B00E83409 /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +93,7 @@
 		D2DE671F285FC9CE00E83409 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
+				D2DE672328603D9B00E83409 /* Presenter.swift */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -183,6 +186,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2DE672428603D9B00E83409 /* Presenter.swift in Sources */,
 				D2DE671D285FC0A200E83409 /* ToDoListTaskModel.swift in Sources */,
 				D2DE6707285F68A200E83409 /* ViewController.swift in Sources */,
 				D2DE6703285F68A200E83409 /* AppDelegate.swift in Sources */,
