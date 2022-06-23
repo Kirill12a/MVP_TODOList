@@ -16,6 +16,12 @@ protocol PresentAlertProtocol {
 protocol AlertPresentProtocol {
 }
 
+
+protocol Test {
+    func sayHelo(name:User)
+}
+
+
 typealias AlertAndViewControoler = AlertPresentProtocol & UIViewController
 class PresnterMainViewContoller {
     var delegate: PresentAlertProtocol!
@@ -23,6 +29,9 @@ class PresnterMainViewContoller {
     func printValueUser(user: [User], index:Int){
         print("User name == \(user[index].name)")
     }
+
+
+    var delegateTest: Test!
 
     var delegateAlert: AlertAndViewControoler!
 
@@ -35,9 +44,19 @@ class PresnterMainViewContoller {
 
         alertVC.addAction(UIAlertAction(title: "Ok", style: .default,handler: { action in
             let textField = alertVC.textFields![0] as UITextField
+            // текст есть !!!
             print(textField.text!)
+            self.delegateTest.sayHelo(name: User(name: textField.text!, age: 19))
 
+//                self.testHelloTwo()
         }))
         delegateAlert.present(alertVC, animated: true)
+    }
+
+
+    func testHelloTwo(){
+        print("Hello user From Presenter")
+        delegateTest.sayHelo(name: User(name: "Anton", age: 1))
+
     }
 }

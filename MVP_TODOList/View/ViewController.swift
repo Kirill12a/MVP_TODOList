@@ -30,6 +30,7 @@ class ViewController: UIViewController, AlertPresentProtocol {
         // presenter
         presenter.delegate = self
         presenter.delegateAlert = self
+        presenter.delegateTest = self
 
     }
 
@@ -43,6 +44,11 @@ class ViewController: UIViewController, AlertPresentProtocol {
         title = "Todo"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(alertCreate))
+
+
+        presenter.testHelloTwo()
+
+//        presenter.testHelloTwo()
     }
 }
 
@@ -60,15 +66,15 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+
     }
 }
 
 extension ViewController: PresentAlertProtocol {
     @objc func alertCreate() {
-
         presenter.printValueUser(user: userList, index: 1)
         presenter.createAlertController(user: userList, index: 1)
-
     }
 }
 //var realm: Realm!
@@ -99,3 +105,20 @@ extension ViewController: PresentAlertProtocol {
 //    self.realm.add(newToDoList)
 //    tableview.insertRows(at: [IndexPath.init(row: self.todolist.count-1, section: 0)], with: .automatic)
 //})
+
+
+
+extension ViewController: Test {
+    func sayHelo(name: User) {
+
+        DispatchQueue.main.async {
+            self.userList.append(name)
+                self.viewSource.tableView.reloadData()
+        }
+//
+//
+//        print(userList)
+
+        print("-------------------------")
+    }
+}
