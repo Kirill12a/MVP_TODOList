@@ -1,2 +1,2 @@
 # MVP_TODOList
-mvp, anchor
+mvp
