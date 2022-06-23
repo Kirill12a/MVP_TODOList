@@ -5,6 +5,7 @@
 //  Created by Kirill Drozdov on 19.06.2022.
 //
 
+import RealmSwift
 import UIKit
 
 
@@ -14,6 +15,15 @@ struct User {
 }
 
 class ViewController: UIViewController, AlertPresentProtocol {
+
+
+    var realm: Realm!
+
+    var todoList: Results<ToDoListTaskModel>{
+        get {
+            return realm.objects(ToDoListTaskModel.self)
+        }
+    }
 
     var viewSource: VcView = {
         var vc = VcView()
@@ -48,6 +58,9 @@ class ViewController: UIViewController, AlertPresentProtocol {
 
         presenter.testHelloTwo()
 
+
+        realm = try! Realm()
+
 //        presenter.testHelloTwo()
     }
 }
@@ -55,12 +68,12 @@ class ViewController: UIViewController, AlertPresentProtocol {
 //MARK:  - TableViewDelegate
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return userList.count
+        return todoList.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = userList[indexPath.row].name
+        cell.textLabel?.text = todoList[indexPath.row].name
         cell.backgroundColor = .red
         return cell
     }
@@ -109,16 +122,25 @@ extension ViewController: PresentAlertProtocol {
 
 
 extension ViewController: Test {
-    func sayHelo(name: User) {
+    func sayHelo(name: ToDoListTaskModel) {
+
+        try! self.realm.write({
+            self.realm.add(name)
+        })
 
         DispatchQueue.main.async {
-            self.userList.append(name)
+//            self.userList.append(name)
                 self.viewSource.tableView.reloadData()
         }
-//
-//
-//        print(userList)
-
-        print("-------------------------")
     }
+
+//    func sayHelo(name: User) {
+//
+//
+////
+////
+////        print(userList)
+//
+//        print("-------------------------")
+//    }
 }

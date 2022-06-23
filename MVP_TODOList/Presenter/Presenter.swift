@@ -18,7 +18,7 @@ protocol AlertPresentProtocol {
 
 
 protocol Test {
-    func sayHelo(name:User)
+    func sayHelo(name:ToDoListTaskModel)
 }
 
 
@@ -46,7 +46,10 @@ class PresnterMainViewContoller {
             let textField = alertVC.textFields![0] as UITextField
             // текст есть !!!
             print(textField.text!)
-            self.delegateTest.sayHelo(name: User(name: textField.text!, age: 19))
+            let object = ToDoListTaskModel()
+            object.name = textField.text!
+//            object.done = false
+            self.delegateTest.sayHelo(name:object)
 
 //                self.testHelloTwo()
         }))
@@ -56,7 +59,7 @@ class PresnterMainViewContoller {
 
     func testHelloTwo(){
         print("Hello user From Presenter")
-        delegateTest.sayHelo(name: User(name: "Anton", age: 1))
+//        delegateTest.sayHelo(name: User(name: "Anton", age: 1))
 
     }
 }
