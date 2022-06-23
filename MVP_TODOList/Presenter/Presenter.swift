@@ -9,29 +9,35 @@ import Foundation
 import UIKit
 
 
-protocol TupTableViewDelegate {
-    func didTup()
+protocol PresentAlertProtocol {
+    func alertCreate()
 }
 
-protocol CreateTaskDelegate {
-     func createTask()
+protocol AlertPresentProtocol {
 }
 
-//typealias alertAndViewDelegate = AlertShowDelegate & ViewController
+typealias AlertAndViewControoler = AlertPresentProtocol & UIViewController
+class PresnterMainViewContoller {
+    var delegate: PresentAlertProtocol!
 
-class MainPresenter {
-    var delegate: TupTableViewDelegate!
-    var delegateCreateTask: CreateTaskDelegate!
-//    var delegatePresentAlert: alertAndViewDelegate!
-
-
-    func tableViewTouch(){
-        delegate.didTup()
+    func printValueUser(user: [User], index:Int){
+        print("User name == \(user[index].name)")
     }
 
-    
+    var delegateAlert: AlertAndViewControoler!
 
+    func createAlertController(user:[User], index:Int){
+        let alertVC = UIAlertController(title: "Привет ", message: "Тебя зовут \(user[index].name))", preferredStyle: .alert)
 
+        alertVC.addTextField(configurationHandler: { (textField) -> Void in
+            textField.placeholder = "Введите текст"
+        })
 
+        alertVC.addAction(UIAlertAction(title: "Ok", style: .default,handler: { action in
+            let textField = alertVC.textFields![0] as UITextField
+            print(textField.text!)
 
+        }))
+        delegateAlert.present(alertVC, animated: true)
+    }
 }
