@@ -22,7 +22,6 @@ class VcView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-
     var tableView: UITableView = {
         var table = UITableView()
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -30,12 +29,8 @@ class VcView: UIView {
         return table
     }()
 
-
     func setUp(){
         [tableView].forEach(self.addSubview(_:))
-
-
-
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: topAnchor),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor),

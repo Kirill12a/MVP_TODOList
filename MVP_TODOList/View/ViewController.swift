@@ -5,37 +5,20 @@
 //  Created by Kirill Drozdov on 19.06.2022.
 //
 
-import UIKit
 import RealmSwift
+import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+
+
+class ViewController: UIViewController, AlertPresentProtocol {
+
+    var realm: Realm!
+
+    var todoList: Results<ToDoListTaskModel>{
+        get {
+            return realm.objects(ToDoListTaskModel.self)
+        }
     }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.backgroundColor = .red
-        return cell
-    }
-
-
-    override func loadView() {
-super.loadView()
-        self.view = viewSource
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        viewSource.tableView.delegate = self
-        viewSource.tableView.dataSource = self
-        title = "Todo"
-        navigationController?.navigationBar.prefersLargeTitles = true
-
-    }
-
-
 
     var viewSource: VcView = {
         var vc = VcView()
@@ -43,35 +26,67 @@ super.loadView()
     }()
 
 
+    fileprivate var presenter = PresnterMainViewContoller()
+
+    override func loadView() {
+        super.loadView()
+        self.view = viewSource
+
+        presenter.delegateAlert = self
+        presenter.delegateRealm = self
+
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        viewSource.tableView.delegate = self
+        viewSource.tableView.dataSource = self
+
+        title = "Todo"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(alertCreate))
+
+        realm = try! Realm()
+    }
 }
 
+//MARK:  - TableViewDelegate
+extension ViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return todoList.count
+    }
 
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = todoList[indexPath.row].name
+        cell.backgroundColor = .red
+        return cell
+    }
 
-//var realm: Realm!
-//
-//var todoList: Results<ToDoListTaskModel>{
-//    get {
-//        return realm.objects(ToDoListTaskModel.self)
-//    }
-//}
-//
-//
-//override func viewDidLoad() {
-//    super.viewDidLoad()
-//    realm = try! Realm()
-//}
-//
-//
-//func .... {
-//    return todoList.count
-//}
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
+        try! self.realm.write({
+            self.realm.delete(todoList[indexPath.row])
+        })
+        DispatchQueue.main.async {
+            self.viewSource.tableView.reloadData()
+        }
+    }
+}
 
+extension ViewController: PresentAlertProtocol {
+    @objc func alertCreate() {
+        presenter.createAlertController()
+    }
+}
 
-// add
-
-//
-//try! self.realm.write({
-//    self.realm.add(newToDoList)
-//    tableview.insertRows(at: [IndexPath.init(row: self.todolist.count-1, section: 0)], with: .automatic)
-//})
+extension ViewController: RealmProtocol {
+    func save(task: ToDoListTaskModel) {
+        try! self.realm.write({
+            self.realm.add(task)
+        })
+        DispatchQueue.main.async {
+            self.viewSource.tableView.reloadData()
+        }
+    }
+}
