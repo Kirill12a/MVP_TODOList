@@ -22,14 +22,12 @@ class VcView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-
     var tableView: UITableView = {
         var table = UITableView()
         table.translatesAutoresizingMaskIntoConstraints = false
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return table
     }()
-
 
     func setUp(){
         [tableView].forEach(self.addSubview(_:))

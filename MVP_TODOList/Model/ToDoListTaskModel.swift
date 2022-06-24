@@ -8,7 +8,6 @@
 import Foundation
 import RealmSwift
 
-
 class ToDoListTaskModel: Object {
     @objc dynamic var name = ""
     @objc dynamic var done = false
